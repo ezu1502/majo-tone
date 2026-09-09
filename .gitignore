@@ -1,3 +1,6 @@
 .vscode/
 *.pyc
 songs/
+*.wav
+*.mp3
+*.flac
