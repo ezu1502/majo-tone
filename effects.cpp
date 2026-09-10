@@ -44,7 +44,6 @@ void soft_clipping(int32_t& l, int32_t& r){
             r = 32767 * percentage * sign_r;
         }
     }
-
 }
 
 void gain(int32_t& l, int32_t& r, float amount){
@@ -68,9 +67,6 @@ void hard_drive(int32_t& l, int32_t& r, float amount){
 
     gain(l, r, amount);
     hard_clipping(l, r);
-    
-    l = std::round(l / amount);
-    r = std::round(r / amount);
 }
 
 void soft_drive(int32_t& l, int32_t& r, float amount){
@@ -80,7 +76,13 @@ void soft_drive(int32_t& l, int32_t& r, float amount){
 
     gain(l, r, amount);
     soft_clipping(l, r);
-    
-    l = std::round(l / amount);
-    r = std::round(r / amount);
+}
+
+
+void low_pass(int32_t& l, int32_t& r, const int32_t& previous_l, const int32_t& previous_r, float alpha){
+    int32_t delta_l = l - previous_l;
+    int32_t delta_r = r - previous_r;
+
+    l = previous_l + std::round(alpha * delta_l);
+    r = previous_r + std::round(alpha * delta_r);
 }
